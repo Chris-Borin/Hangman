@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Hangman
 {
     internal class BodyParts
     {
-        public int AttemptsRemain { get; set; }
-        public string CurrentBodyPart { get; set; }
-        public string NextBodyPart { get; set; }
-        public int CurrentBodyIndex { get; set; }
-        public List<string> AllBody { get; set; }
+        public int AttemptsRemain { get; private set; }
+        public string CurrentBodyPart { get; private set; }
+        public string NextBodyPart { get; private set; }
+        private int CurrentBodyIndex { get; set; }
+        private List<string> AllBody { get; set; }
 
         /// <summary>
         /// BodyParts Parameterized Constructor
-        /// PopulateBody() called
+        /// PopulateBody() Helper
         /// Current and Next Body Part initialized
         /// Remaining Attempts initialized
         /// </summary>
@@ -31,13 +27,38 @@ namespace Hangman
         }
 
         /// <summary>
+        /// UpdateAttempt() Helper
+        /// </summary>
+        public void AttemptHelp()
+        {
+            UpdateAttempt();
+        }
+
+        /// <summary>
+        /// Decrements Number of Remaining Attempts
+        /// </summary>
+        private void UpdateAttempt()
+        {
+            AttemptsRemain--;
+        }
+
+        /// <summary>
+        /// BodyPartsUpdate() Helper
+        /// </summary>
+        public void Update()
+        {
+            BodyPartsUpdate();
+        }
+
+        /// <summary>
         /// Increments CurrentBodyIndex
         /// Updates Current and Next Body Part by default
         /// Updates Current Body Part and sets Next Body Part if user is on last attempt of game
         /// </summary>
-        public void BodyPartsUpdate()
+        private void BodyPartsUpdate()
         {
             CurrentBodyIndex++;
+            AttemptsRemain--;
             if (AllBody.Count == CurrentBodyIndex + 1)
             {
                 CurrentBodyPart = NextBodyPart;
@@ -54,7 +75,7 @@ namespace Hangman
         /// Initializes list of strings for body parts
         /// Populates all body parts
         /// </summary>
-        public void PopulateBody()
+        private void PopulateBody()
         {
             AllBody = new List<string>();
             AllBody.Add("None");

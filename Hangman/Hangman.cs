@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Hangman
@@ -17,31 +11,25 @@ namespace Hangman
             InitializeComponent();
         }
 
-        // Declaring and initializing list of WordBank objects
-        List<WordBank> words = new List<WordBank>();
-
         // Declaring and initializing list of BodyParts objects
-        List<BodyParts> prompts = new List<BodyParts>();
+        private List<BodyParts> prompts = new List<BodyParts>();
 
         // Declaring and initializing list of bools
-        List<bool> match = new List<bool>();
-
-        // Stores randomly chosen answer
-        string theWord;
+        private List<bool> match = new List<bool>();
 
         // Stores updated answer label
-        string guessing;
-
-        // Stores number of remaining attempts
-        int attempts;
+        private string guessing;
 
         // Stores all letters which have been attempted
-        string guessLetters = "";
+        private string guessLetters = "";
 
         // Declaring, initializing, and instantiating new BodyParts object with an integer argument
         // Argument is hard coded with the number of attempts available
         // 6 is the number of body parts/attempts
-        BodyParts bp = new BodyParts(6);
+        private BodyParts bp = new BodyParts(6);
+
+        // Declaring, initializing, and instantiating new WordBank object
+        private WordBank wb = new WordBank();
 
         /// <summary>
         /// Hangman Form Load Event Handler
@@ -52,37 +40,41 @@ namespace Hangman
         {
             // Setting answer label to false before label manipulation
             lblGeneratedWrd.Visible = false;
-            attempts = bp.AttemptsRemain;
 
             lblGuessed.Visible = false;
 
             // Initializing word bank
-            words.Add(new WordBank("stiiizy"));
-            words.Add(new WordBank("bong"));
-            words.Add(new WordBank("pipe"));
-            words.Add(new WordBank("grinder"));
-            words.Add(new WordBank("lighter"));
-            words.Add(new WordBank("weed"));
-            words.Add(new WordBank("bud"));
-            words.Add(new WordBank("joint"));
-            words.Add(new WordBank("dab"));
-            words.Add(new WordBank("preroll"));
+            wb.NewWord("water");
+            wb.NewWord("ice");
+            wb.NewWord("food");
+            wb.NewWord("juice");
+            wb.NewWord("coke");
+            wb.NewWord("sugar");
+            wb.NewWord("apple");
+            wb.NewWord("banana");
+            wb.NewWord("avocado");
+            wb.NewWord("blueberry");
+            wb.NewWord("strawberry");
+            wb.NewWord("grapes");
+
+            gvWordBank.DataSource = wb.WordsList; // Displays number of chars in string, not string representation
+            gvWordBank.Columns[0].HeaderText = "Word List";
 
             // Generating random answer
             Random rand = new Random();
-            int generatedWrd = rand.Next(words.Count);
-            string displayWrd = words[generatedWrd].Word;
-            theWord = displayWrd;
+            int generatedWrd = rand.Next(wb.WordsList.Count);
+            string displayWrd = wb.WordsList[generatedWrd];
+            wb.ChosenWord(displayWrd);
 
             // Initializing length of progress bar
-            prgrssBarWrd.Maximum = displayWrd.Length;
+            prgrssBarWrd.Maximum = wb.Word.Length;
             
             // Initializing Data Source of Grid View
             prompts.Add(bp);
 
             // Setting answer label to number of chars from answer word
             lblGeneratedWrd.Text = "";
-            for(int i = 0; i < displayWrd.Length; i++)
+            for(int i = 0; i < wb.Word.Length; i++)
             {
                 lblGeneratedWrd.Text += "_ ";
             }
@@ -93,31 +85,17 @@ namespace Hangman
             gvHangman.DataSource = prompts;
 
             // Manipulating header text of Grid View for UX
-            foreach(DataGridViewColumn column in gvHangman.Columns)
-            {
-                switch (column.Index)
-                {
-                    case 0:
-                        column.HeaderText = "Attempts Remaining";
-                        break;
-                    case 1:
-                        column.HeaderText = "Current Body Part";
-                        break;
-                    case 2:
-                        column.HeaderText = "Next Body Part";
-                        break;
-                    case 3:
-                        column.Visible = false;
-                        break;
-                }
-            }
+            gvHangman.Columns[0].HeaderText = "Attempts Remaining";
+            gvHangman.Columns[1].HeaderText = "Current Body Part";
+            gvHangman.Columns[2].HeaderText = "Next Body Part";
 
             // Allocating List of bools for letter assertions
-            foreach (char word in theWord)
+            foreach (char word in wb.Word)
             {
                 match.Add(false);
             }
 
+            // Initializing and displaying guessed letters label
             lblGuessed.Text = "";
             lblGuessed.Visible = true;
         }
@@ -144,10 +122,8 @@ namespace Hangman
             // Initializing counter to handle indexes of bool List
             int cnt = 0;
 
-            
-
             // Confirming user input matches at least one letter from the answer
-            if (theWord.Contains(txtLttrGuess.Text) && !guessLetters.Contains(txtLttrGuess.Text))
+            if (wb.Word.Contains(txtLttrGuess.Text) && !guessLetters.Contains(txtLttrGuess.Text))
             {
                 // guessing used to store updated answer label
                 guessing = lblGeneratedWrd.Text;
@@ -158,13 +134,13 @@ namespace Hangman
                 lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
 
                 // Keeps track of which letters have been already guessed
-                foreach (char word in theWord)
+                foreach (char word in wb.Word)
                 {
                     if(word == lttrGuess)
                     {
                         match[cnt] = true;
                         // Incrementing progress bar based on number of correctly guessed letters
-                        if(attempts > -1)
+                        if(bp.AttemptsRemain > -1)
                             prgrssBarWrd.Value++;
                     }
                     // Incrementing counter to account for List of bools indexes
@@ -176,7 +152,7 @@ namespace Hangman
                 foreach(bool one in match)
                 {
                     if (one)
-                        lblGeneratedWrd.Text += theWord[cnt];
+                        lblGeneratedWrd.Text += wb.Word[cnt];
                     else
                         lblGeneratedWrd.Text += "_ ";
                     cnt++;
@@ -193,7 +169,7 @@ namespace Hangman
                         return;
                 }
                 // Win event alert
-                MessageBox.Show("Congratulations! You have correctly guessed Hangman. The word was " + theWord.ToUpper());
+                MessageBox.Show("Congratulations! You have correctly guessed Hangman. The word was " + wb.Word.ToUpper());
                 this.Close();
                 return;
             }
@@ -210,16 +186,12 @@ namespace Hangman
             {
                 guessLetters += txtLttrGuess.Text;
                 lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
-                attempts--;
 
-                // Updates body parts and remaining attempts
-                // Only updates if remaining attempts > -1 to avoid out of bounds exception
-                // with body parts for user's last attempt
-                if(attempts > -1)
-                {
-                    bp.AttemptsRemain = attempts;
-                    bp.BodyPartsUpdate();
-                }
+                // Updates body parts and remaining attempts based on remaining attempts
+                if (bp.AttemptsRemain > 0)
+                    bp.Update();
+                else
+                    bp.AttemptHelp();
             }
 
             // Reinitializing Data Source of Grid View
@@ -227,31 +199,17 @@ namespace Hangman
             gvHangman.DataSource = prompts;
 
             // Manipulating header text of Grid View for UX
-            foreach (DataGridViewColumn column in gvHangman.Columns)
-            {
-                switch (column.Index)
-                {
-                    case 0:
-                        column.HeaderText = "Attempts Remaining";
-                        break;
-                    case 1:
-                        column.HeaderText = "Current Body Part";
-                        break;
-                    case 2:
-                        column.HeaderText = "Next Body Part";
-                        break;
-                    case 3:
-                        column.Visible = false;
-                        break;
-                }
-            }
+            gvHangman.Columns[0].HeaderText = "Attempts Remaining";
+            gvHangman.Columns[1].HeaderText = "Current Body Part";
+            gvHangman.Columns[2].HeaderText = "Next Body Part";
+
             // Number of attempts exceeded
             // Outputs alert message
             // Closes form
-            if (attempts == -1)
+            if (bp.AttemptsRemain == -1)
             {
                 // Lose event alert
-                MessageBox.Show("You've exceeded the alloted number of chances, the word was " + theWord.ToUpper());
+                MessageBox.Show("You've exceeded the alloted number of chances, the word was " + wb.Word.ToUpper());
                 this.Close();
                 return;
             }

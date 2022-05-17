@@ -38,7 +38,9 @@
             this.lblProgressBar = new System.Windows.Forms.Label();
             this.lblGuessLttrs = new System.Windows.Forms.Label();
             this.lblGuessed = new System.Windows.Forms.Label();
+            this.gvWordBank = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.gvHangman)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvWordBank)).BeginInit();
             this.SuspendLayout();
             // 
             // prgrssBarWrd
@@ -54,16 +56,16 @@
             // txtLttrGuess
             // 
             this.txtLttrGuess.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtLttrGuess.Location = new System.Drawing.Point(110, 287);
+            this.txtLttrGuess.Location = new System.Drawing.Point(694, 247);
             this.txtLttrGuess.Name = "txtLttrGuess";
-            this.txtLttrGuess.Size = new System.Drawing.Size(441, 39);
+            this.txtLttrGuess.Size = new System.Drawing.Size(327, 39);
             this.txtLttrGuess.TabIndex = 2;
             // 
             // lblPrompt
             // 
             this.lblPrompt.AutoSize = true;
             this.lblPrompt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblPrompt.Location = new System.Drawing.Point(110, 198);
+            this.lblPrompt.Location = new System.Drawing.Point(631, 172);
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(441, 32);
             this.lblPrompt.TabIndex = 4;
@@ -73,7 +75,7 @@
             // 
             this.lblGeneratedWrd.AutoSize = true;
             this.lblGeneratedWrd.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblGeneratedWrd.Location = new System.Drawing.Point(617, 385);
+            this.lblGeneratedWrd.Location = new System.Drawing.Point(588, 546);
             this.lblGeneratedWrd.Name = "lblGeneratedWrd";
             this.lblGeneratedWrd.Size = new System.Drawing.Size(315, 54);
             this.lblGeneratedWrd.TabIndex = 5;
@@ -84,7 +86,7 @@
             // 
             this.btnGuessLttr.AutoSize = true;
             this.btnGuessLttr.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnGuessLttr.Location = new System.Drawing.Point(231, 349);
+            this.btnGuessLttr.Location = new System.Drawing.Point(752, 309);
             this.btnGuessLttr.Name = "btnGuessLttr";
             this.btnGuessLttr.Size = new System.Drawing.Size(206, 55);
             this.btnGuessLttr.TabIndex = 6;
@@ -96,7 +98,7 @@
             // 
             this.gvHangman.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvHangman.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.gvHangman.Location = new System.Drawing.Point(617, 220);
+            this.gvHangman.Location = new System.Drawing.Point(588, 399);
             this.gvHangman.Name = "gvHangman";
             this.gvHangman.RowHeadersWidth = 62;
             this.gvHangman.RowTemplate.Height = 33;
@@ -117,7 +119,7 @@
             // 
             this.lblGuessLttrs.AutoSize = true;
             this.lblGuessLttrs.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblGuessLttrs.Location = new System.Drawing.Point(42, 521);
+            this.lblGuessLttrs.Location = new System.Drawing.Point(35, 648);
             this.lblGuessLttrs.Name = "lblGuessLttrs";
             this.lblGuessLttrs.Size = new System.Drawing.Size(227, 38);
             this.lblGuessLttrs.TabIndex = 9;
@@ -128,18 +130,30 @@
             // 
             this.lblGuessed.AutoSize = true;
             this.lblGuessed.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblGuessed.Location = new System.Drawing.Point(275, 526);
+            this.lblGuessed.Location = new System.Drawing.Point(268, 653);
             this.lblGuessed.Name = "lblGuessed";
             this.lblGuessed.Size = new System.Drawing.Size(72, 32);
             this.lblGuessed.TabIndex = 10;
             this.lblGuessed.Text = "blank";
             this.lblGuessed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // gvWordBank
+            // 
+            this.gvWordBank.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvWordBank.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.gvWordBank.Location = new System.Drawing.Point(121, 172);
+            this.gvWordBank.Name = "gvWordBank";
+            this.gvWordBank.RowHeadersWidth = 62;
+            this.gvWordBank.RowTemplate.Height = 33;
+            this.gvWordBank.Size = new System.Drawing.Size(239, 443);
+            this.gvWordBank.TabIndex = 11;
+            // 
             // FrmHangman
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1213, 624);
+            this.ClientSize = new System.Drawing.Size(1213, 719);
+            this.Controls.Add(this.gvWordBank);
             this.Controls.Add(this.lblGuessed);
             this.Controls.Add(this.lblGuessLttrs);
             this.Controls.Add(this.lblProgressBar);
@@ -154,6 +168,7 @@
             this.Text = "Hangman";
             this.Load += new System.EventHandler(this.HangmanFrm_LoadEventHandler);
             ((System.ComponentModel.ISupportInitialize)(this.gvHangman)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvWordBank)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,5 +185,6 @@
         private System.Windows.Forms.Label lblProgressBar;
         private System.Windows.Forms.Label lblGuessLttrs;
         private System.Windows.Forms.Label lblGuessed;
+        private System.Windows.Forms.DataGridView gvWordBank;
     }
 }
