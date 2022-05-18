@@ -17,18 +17,15 @@ namespace Hangman
         // Declaring and initializing list of bools
         private List<bool> match = new List<bool>();
 
-        // Stores updated answer label
-        private string guessing;
-
         // Stores all letters which have been attempted
         private string guessLetters = "";
 
-        // Declaring, initializing, and instantiating new BodyParts object with an integer argument
-        // Argument is hard coded with the number of attempts available
-        // 6 is the number of body parts/attempts
-        private BodyParts bp = new BodyParts(6);
+        // Declaring, initializing, and instantiating new BodyParts object
+        // Populates Body Parts
+        private BodyParts bp = new BodyParts();
 
-        // Declaring, initializing, and instantiating new WordBank object
+        // Declaring, initializing, and instantiating WordBank object
+        // Populates contents of Word Bank
         private WordBank wb = new WordBank();
 
         /// <summary>
@@ -38,27 +35,20 @@ namespace Hangman
         /// <param name="e"></param>
         private void HangmanFrm_LoadEventHandler(object sender, EventArgs e)
         {
+            // Initializing Body Parts attributes
+            bp.NewWord();
+
             // Setting answer label to false before label manipulation
             lblGeneratedWrd.Visible = false;
 
+            // Hiding guessed letters label before manipulation
             lblGuessed.Visible = false;
 
-            // Initializing word bank
-            wb.NewWord("water");
-            wb.NewWord("ice");
-            wb.NewWord("food");
-            wb.NewWord("juice");
-            wb.NewWord("coke");
-            wb.NewWord("sugar");
-            wb.NewWord("apple");
-            wb.NewWord("banana");
-            wb.NewWord("avocado");
-            wb.NewWord("blueberry");
-            wb.NewWord("strawberry");
-            wb.NewWord("grapes");
-
-            gvWordBank.DataSource = wb.WordsList; // Displays number of chars in string, not string representation
-            gvWordBank.Columns[0].HeaderText = "Word List";
+            // Displaying contents of Word Bank with numerical order
+            for(int i = 0; i < wb.WordsList.Count; i++)
+            {
+                lstbxWordBank.Items.Add(i+1 + ". " + wb.WordsList[i]);
+            }
 
             // Generating random answer
             Random rand = new Random();
@@ -125,8 +115,6 @@ namespace Hangman
             // Confirming user input matches at least one letter from the answer
             if (wb.Word.Contains(txtLttrGuess.Text) && !guessLetters.Contains(txtLttrGuess.Text))
             {
-                // guessing used to store updated answer label
-                guessing = lblGeneratedWrd.Text;
                 // Reinitializing label to empty string for repopulation
                 lblGeneratedWrd.Text = "";
 
@@ -157,8 +145,6 @@ namespace Hangman
                         lblGeneratedWrd.Text += "_ ";
                     cnt++;
                 }
-                // Updating answer label for next comparison
-                guessing = lblGeneratedWrd.Text;
 
                 // Win assertion
                 foreach (bool two in match)
@@ -189,9 +175,9 @@ namespace Hangman
 
                 // Updates body parts and remaining attempts based on remaining attempts
                 if (bp.AttemptsRemain > 0)
-                    bp.Update();
+                    bp.BodyPartsUpdate();
                 else
-                    bp.AttemptHelp();
+                    bp.AttemptUpdate();
             }
 
             // Reinitializing Data Source of Grid View
@@ -213,6 +199,57 @@ namespace Hangman
                 this.Close();
                 return;
             }
+        }
+
+        private void BtnNewWord_ClickEventHandler(object sender, EventArgs e)
+        {
+            // Reinitializing label of guessed letters
+            guessLetters = "";
+
+            // Setting answer label to false before label manipulation
+            lblGeneratedWrd.Visible = false;
+
+            // Hiding guessed letters label before manipulation
+            lblGuessed.Visible = false;
+
+            // Generating random answer
+            Random rand = new Random();
+            int generatedWrd = rand.Next(wb.WordsList.Count);
+            string displayWrd = wb.WordsList[generatedWrd];
+            wb.ChosenWord(displayWrd);
+
+            // Setting answer label to number of chars from answer word
+            lblGeneratedWrd.Text = "";
+            lblGuessed.Text = "";
+            for (int i = 0; i < wb.Word.Length; i++)
+            {
+                lblGeneratedWrd.Text += "_ ";
+            }
+            // Setting answer label visibility to true after label is manipulated
+            lblGeneratedWrd.Visible = true;
+            lblGuessed.Visible = true;
+
+            // Reinitializing Data Source of Grid View
+            gvHangman.DataSource = null;
+            gvHangman.DataSource = prompts;
+
+            // Manipulating header text of Grid View for UX
+            gvHangman.Columns[0].HeaderText = "Attempts Remaining";
+            gvHangman.Columns[1].HeaderText = "Current Body Part";
+            gvHangman.Columns[2].HeaderText = "Next Body Part";
+
+            // Reinitializing progress bar value
+            prgrssBarWrd.Value = 0;
+
+            // Reinitializing List of bools for letter assertions
+            match.Clear();
+            foreach (char word in wb.Word)
+            {
+                match.Add(false);
+            }
+
+            // Reinitializing Body Part attributes
+            bp.NewWord();
         }
     }
 }

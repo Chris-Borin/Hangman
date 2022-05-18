@@ -14,42 +14,26 @@ namespace Hangman
         /// <param name="inputWrd"></param>
         public WordBank()
         {
-            wordsList = new List<string>();
-        }
-
-        /// <summary>
-        /// Helper Function for addWord()
-        /// Sends its parameter as an argument
-        /// </summary>
-        /// <param name="word"></param>
-        public void NewWord(string word)
-        {
-            AddWord(word);
-        }
-
-        /// <summary>
-        /// Adds parameter data to WordList
-        /// </summary>
-        /// <param name="word"></param>
-        private void AddWord(string word)
-        {
-            wordsList.Add(word);
-        }
-
-        /// <summary>
-        /// Helper method for theWord()
-        /// </summary>
-        /// <param name="word"></param>
-        public void ChosenWord(string word)
-        {
-            TheWord(word);
+            WordsList = new List<string>();
+            WordsList.Add("water");
+            WordsList.Add("ice");
+            WordsList.Add("food");
+            WordsList.Add("juice");
+            WordsList.Add("coke");
+            WordsList.Add("sugar");
+            WordsList.Add("apple");
+            WordsList.Add("banana");
+            WordsList.Add("avocado");
+            WordsList.Add("blueberry");
+            WordsList.Add("strawberry");
+            WordsList.Add("grapes");
         }
 
         /// <summary>
         /// Allocates randomly chosen answer
         /// </summary>
         /// <param name="word"></param>
-        private void TheWord(string word)
+        public void ChosenWord(string word)
         {
             Word = word;
         }

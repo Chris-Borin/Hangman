@@ -38,9 +38,10 @@
             this.lblProgressBar = new System.Windows.Forms.Label();
             this.lblGuessLttrs = new System.Windows.Forms.Label();
             this.lblGuessed = new System.Windows.Forms.Label();
-            this.gvWordBank = new System.Windows.Forms.DataGridView();
+            this.lstbxWordBank = new System.Windows.Forms.ListBox();
+            this.lblWordList = new System.Windows.Forms.Label();
+            this.btnNewWord = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gvHangman)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvWordBank)).BeginInit();
             this.SuspendLayout();
             // 
             // prgrssBarWrd
@@ -65,7 +66,7 @@
             // 
             this.lblPrompt.AutoSize = true;
             this.lblPrompt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblPrompt.Location = new System.Drawing.Point(631, 172);
+            this.lblPrompt.Location = new System.Drawing.Point(632, 182);
             this.lblPrompt.Name = "lblPrompt";
             this.lblPrompt.Size = new System.Drawing.Size(441, 32);
             this.lblPrompt.TabIndex = 4;
@@ -119,7 +120,7 @@
             // 
             this.lblGuessLttrs.AutoSize = true;
             this.lblGuessLttrs.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblGuessLttrs.Location = new System.Drawing.Point(35, 648);
+            this.lblGuessLttrs.Location = new System.Drawing.Point(32, 697);
             this.lblGuessLttrs.Name = "lblGuessLttrs";
             this.lblGuessLttrs.Size = new System.Drawing.Size(227, 38);
             this.lblGuessLttrs.TabIndex = 9;
@@ -130,30 +131,52 @@
             // 
             this.lblGuessed.AutoSize = true;
             this.lblGuessed.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblGuessed.Location = new System.Drawing.Point(268, 653);
+            this.lblGuessed.Location = new System.Drawing.Point(265, 702);
             this.lblGuessed.Name = "lblGuessed";
             this.lblGuessed.Size = new System.Drawing.Size(72, 32);
             this.lblGuessed.TabIndex = 10;
             this.lblGuessed.Text = "blank";
             this.lblGuessed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // gvWordBank
+            // lstbxWordBank
             // 
-            this.gvWordBank.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvWordBank.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.gvWordBank.Location = new System.Drawing.Point(121, 172);
-            this.gvWordBank.Name = "gvWordBank";
-            this.gvWordBank.RowHeadersWidth = 62;
-            this.gvWordBank.RowTemplate.Height = 33;
-            this.gvWordBank.Size = new System.Drawing.Size(239, 443);
-            this.gvWordBank.TabIndex = 11;
+            this.lstbxWordBank.FormattingEnabled = true;
+            this.lstbxWordBank.ItemHeight = 25;
+            this.lstbxWordBank.Location = new System.Drawing.Point(289, 209);
+            this.lstbxWordBank.Name = "lstbxWordBank";
+            this.lstbxWordBank.Size = new System.Drawing.Size(234, 429);
+            this.lstbxWordBank.TabIndex = 12;
+            // 
+            // lblWordList
+            // 
+            this.lblWordList.AutoSize = true;
+            this.lblWordList.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+            this.lblWordList.Location = new System.Drawing.Point(353, 155);
+            this.lblWordList.Name = "lblWordList";
+            this.lblWordList.Size = new System.Drawing.Size(104, 30);
+            this.lblWordList.TabIndex = 13;
+            this.lblWordList.Text = "Word List";
+            // 
+            // btnNewWord
+            // 
+            this.btnNewWord.AutoSize = true;
+            this.btnNewWord.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnNewWord.Location = new System.Drawing.Point(62, 373);
+            this.btnNewWord.Name = "btnNewWord";
+            this.btnNewWord.Size = new System.Drawing.Size(158, 48);
+            this.btnNewWord.TabIndex = 14;
+            this.btnNewWord.Text = "New Word";
+            this.btnNewWord.UseVisualStyleBackColor = true;
+            this.btnNewWord.Click += new System.EventHandler(this.BtnNewWord_ClickEventHandler);
             // 
             // FrmHangman
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1213, 719);
-            this.Controls.Add(this.gvWordBank);
+            this.ClientSize = new System.Drawing.Size(1213, 769);
+            this.Controls.Add(this.btnNewWord);
+            this.Controls.Add(this.lblWordList);
+            this.Controls.Add(this.lstbxWordBank);
             this.Controls.Add(this.lblGuessed);
             this.Controls.Add(this.lblGuessLttrs);
             this.Controls.Add(this.lblProgressBar);
@@ -168,7 +191,6 @@
             this.Text = "Hangman";
             this.Load += new System.EventHandler(this.HangmanFrm_LoadEventHandler);
             ((System.ComponentModel.ISupportInitialize)(this.gvHangman)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvWordBank)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -185,6 +207,8 @@
         private System.Windows.Forms.Label lblProgressBar;
         private System.Windows.Forms.Label lblGuessLttrs;
         private System.Windows.Forms.Label lblGuessed;
-        private System.Windows.Forms.DataGridView gvWordBank;
+        private System.Windows.Forms.ListBox lstbxWordBank;
+        private System.Windows.Forms.Label lblWordList;
+        private System.Windows.Forms.Button btnNewWord;
     }
 }

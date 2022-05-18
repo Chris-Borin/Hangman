@@ -8,46 +8,34 @@ namespace Hangman
         public string CurrentBodyPart { get; private set; }
         public string NextBodyPart { get; private set; }
         private int CurrentBodyIndex { get; set; }
-        private List<string> AllBody { get; set; }
+        public List<string> AllBody { get; private set; }
 
         /// <summary>
         /// BodyParts Parameterized Constructor
-        /// PopulateBody() Helper
+        /// Initializes list of strings for body parts
+        /// Populates all body parts
         /// Current and Next Body Part initialized
         /// Remaining Attempts initialized
         /// </summary>
         /// <param name="numAttempts"></param>
-        public BodyParts(int numAttempts)
+        public BodyParts()
         {
-            CurrentBodyIndex = 0;
-            PopulateBody();
-            CurrentBodyPart = AllBody[CurrentBodyIndex];
-            NextBodyPart = AllBody[CurrentBodyIndex + 1];
-            AttemptsRemain = numAttempts;
-        }
-
-        /// <summary>
-        /// UpdateAttempt() Helper
-        /// </summary>
-        public void AttemptHelp()
-        {
-            UpdateAttempt();
+            AllBody = new List<string>();
+            AllBody.Add("None");
+            AllBody.Add("Head");
+            AllBody.Add("Torso");
+            AllBody.Add("Left Arm");
+            AllBody.Add("Right Arm");
+            AllBody.Add("Left Leg");
+            AllBody.Add("Right Leg");
         }
 
         /// <summary>
         /// Decrements Number of Remaining Attempts
         /// </summary>
-        private void UpdateAttempt()
+        public void AttemptUpdate()
         {
             AttemptsRemain--;
-        }
-
-        /// <summary>
-        /// BodyPartsUpdate() Helper
-        /// </summary>
-        public void Update()
-        {
-            BodyPartsUpdate();
         }
 
         /// <summary>
@@ -55,7 +43,7 @@ namespace Hangman
         /// Updates Current and Next Body Part by default
         /// Updates Current Body Part and sets Next Body Part if user is on last attempt of game
         /// </summary>
-        private void BodyPartsUpdate()
+        public void BodyPartsUpdate()
         {
             CurrentBodyIndex++;
             AttemptsRemain--;
@@ -72,19 +60,15 @@ namespace Hangman
         }
 
         /// <summary>
-        /// Initializes list of strings for body parts
-        /// Populates all body parts
+        /// Current and Next Body Part initialized
+        /// Remaining Attempts initialized
         /// </summary>
-        private void PopulateBody()
+        public void NewWord()
         {
-            AllBody = new List<string>();
-            AllBody.Add("None");
-            AllBody.Add("Head");
-            AllBody.Add("Torso");
-            AllBody.Add("Left Arm");
-            AllBody.Add("Right Arm");
-            AllBody.Add("Left Leg");
-            AllBody.Add("Right Leg");
+            CurrentBodyIndex = 0;
+            CurrentBodyPart = AllBody[CurrentBodyIndex];
+            NextBodyPart = AllBody[CurrentBodyIndex + 1];
+            AttemptsRemain = 6;
         }
     }
 }
