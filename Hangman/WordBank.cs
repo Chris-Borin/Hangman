@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Hangman
 {
     internal class WordBank
     {
-        public string Word { get; private set; }
-        public List<string> WordsList { get; private set; }
+        private List<string> WordsList { get; set; }
 
         /// <summary>
         /// WordBank Parameterized Constructor
@@ -30,12 +30,19 @@ namespace Hangman
         }
 
         /// <summary>
-        /// Allocates randomly chosen answer
+        /// Returns randomly chosen answer
+        /// // Keeps track of which letters have been previously guessed
         /// </summary>
         /// <param name="word"></param>
-        public void ChosenWord(string word)
+        public string ChooseWord(int prev)
         {
-            Word = word;
+            Random random = new Random();
+            int generatedWrd = random.Next(WordsList.Count);
+            while (WordsList[generatedWrd].Length == prev)
+            {
+                generatedWrd = random.Next(WordsList.Count);
+            }
+            return WordsList[generatedWrd];
         }
     }
 }
