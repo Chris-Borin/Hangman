@@ -2,6 +2,9 @@
 
 namespace Hangman
 {
+    /// <summary>
+    /// All possible outcomes from a guess
+    /// </summary>
     public enum GuessResult
     {
         match,
@@ -47,10 +50,15 @@ namespace Hangman
         /// <returns></returns>
         public GuessResult Guess(char letter)
         {
+            // Confirms if all indexes of Matched are true
             if (Win())
                 return GuessResult.win;
+
+            // Determines if argument is a duplicate
             else if(GuessLetters.Contains(letter))
                 return GuessResult.duplicate;
+
+            // Guessed letter matches an index of Word
             else if (Word.Contains(letter))
             {
                 GuessLetters.Add(letter);
@@ -63,14 +71,25 @@ namespace Hangman
                 }
                 return GuessResult.match;
             }
+
+            // Guessed letter does not match any indexes of Word
             else
             {
                 GuessLetters.Add(letter);
                 return GuessResult.noMatch;
             }
         }
-        public string Hint()
+
+        /// <summary>
+        /// Reveals an unguessed letter to the user
+        /// </summary>
+        /// <returns></returns>
+        public string Hint(bool end)
         {
+            // Ensures no guesses after conclusion of game
+            if (end)
+                return "More than two remaining letters are required for a hint\n\nSORRY";
+
             // Initializing counter for minimum letters remaining requirement
             int win = 0;
 
@@ -101,7 +120,6 @@ namespace Hangman
             // Appending hint to guessed letters label
             string letter = string.Format("{0}", subtle);
             
-
             // Setting all indexes matching hint to true
             // Used for repeated letters
             index = 0;
@@ -115,6 +133,11 @@ namespace Hangman
             // Returns hint or message needing more available guesses
             return letter;
         }
+
+        /// <summary>
+        /// Returns a string of guessed and unguessed letters
+        /// </summary>
+        /// <returns></returns>
         public string DisplayState()
         {
             string manip = "";

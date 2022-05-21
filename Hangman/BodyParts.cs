@@ -55,6 +55,9 @@ namespace Hangman
             return AllBody[CurrentBodyIndex];
         }
 
+        /// <summary>
+        /// Decrements when no more body parts are available
+        /// </summary>
         public void Hint()
         {
             CurrentBodyIndex--;

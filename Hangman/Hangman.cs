@@ -25,7 +25,7 @@ namespace Hangman
         // Initialized as populated string to initialize word selection in WordBank class
         private string theWord = "1234567890";
 
-        // Used on line 100
+        // True once game has been concluded
         private bool body = false;
 
         /// <summary>
@@ -76,18 +76,24 @@ namespace Hangman
                 return;
             }
 
-            // Displays win message on second to last iteration
-            // Also displays body parts on correct guesses
-
+            // Initializing and instantiating GuessResult object
             GuessResult guessResult = new GuessResult();
+
+            // Determining guess result
             guessResult = gp.Guess(lttrGuess);
+
+            // Used to determine final attempt
             bool last = false;
+
+            // Executes based on guessResult value
             switch (guessResult)
             {
-                case GuessResult.lose:
-                    MessageBox.Show("Congratulations! You have correctly guessed Hangman. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter");
-                    break;
+                // Guessed letter is a match
                 case GuessResult.match:
+
+                    // Confirms game has not concluded
+                    if (body)
+                        break;
 
                     // Reinitializing label to empty string for repopulation
                     lblGeneratedWrd.Text = gp.DisplayState();
@@ -95,21 +101,24 @@ namespace Hangman
                     // Appending current guess to guessed letters label
                     lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
                     break;
+
+                // Guessed letter is not a match
                 case GuessResult.noMatch:
 
+                    // Confirms game has not concluded
                     if (body)
-                    {
-                        MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
-                        return;
-                    }
+                        break;
 
                     // True on final attempt
                     last = bp.HangNext();
+
+                    // Final attempt has been reached
                     if (last)
                     {
                         body = true;
                         lstbxWordBank.Items.Add(bp.LastHung());
                         MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
+                        
                         // Appending current guess to guessed letters label
                         lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
                         return;
@@ -120,11 +129,28 @@ namespace Hangman
                     // Appending current guess to guessed letters label
                     lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
                     break;
+
+                // Guessed letter has previously been attempted
                 case GuessResult.duplicate:
+                    
+                    // Confirms game has not concluded
+                    if (body)
+                        break;
                     MessageBox.Show("You have already guessed the letter " + lttrGuess);
                     break;
             }
+
+            // Prevents user input during a finished game
+            if (body)
+            {
+                MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
+                return;
+            }
+
+            // Result of guess reinitialized to confirm win status
             guessResult = gp.Guess(lttrGuess);
+
+            // Win message
             if (guessResult == GuessResult.win)
             {
                 MessageBox.Show("Congratulations! You have correctly guessed Hangman. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
@@ -140,6 +166,9 @@ namespace Hangman
         /// <param name="e"></param>
         private void BtnNewWord_ClickEventHandler(object sender, EventArgs e)
         {
+            // Reinitializing end of game to false
+            body = false;
+
             // Reinitializing Body Part attributes
             bp.NewWord();
 
@@ -193,7 +222,7 @@ namespace Hangman
         private void BtnHint_ClickEventHandler(object sender, EventArgs e)
         {
             // Stores hint char or message needing more available guesses
-            string hint = gp.Hint();
+            string hint = gp.Hint(body);
 
             // If more than 20 chars, it is a MessageBox
             if (hint.Length > 20)
