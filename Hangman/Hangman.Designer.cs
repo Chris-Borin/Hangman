@@ -39,6 +39,7 @@
             this.lblWordList = new System.Windows.Forms.Label();
             this.btnNewWord = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.btnHint = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtLttrGuess
@@ -128,7 +129,7 @@
             // 
             this.btnNewWord.AutoSize = true;
             this.btnNewWord.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnNewWord.Location = new System.Drawing.Point(62, 347);
+            this.btnNewWord.Location = new System.Drawing.Point(62, 266);
             this.btnNewWord.Name = "btnNewWord";
             this.btnNewWord.Size = new System.Drawing.Size(158, 48);
             this.btnNewWord.TabIndex = 14;
@@ -148,11 +149,24 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.BtnExit_ClickEventHandler);
             // 
+            // btnHint
+            // 
+            this.btnHint.AutoSize = true;
+            this.btnHint.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnHint.Location = new System.Drawing.Point(62, 360);
+            this.btnHint.Name = "btnHint";
+            this.btnHint.Size = new System.Drawing.Size(154, 48);
+            this.btnHint.TabIndex = 16;
+            this.btnHint.Text = "Show Hint";
+            this.btnHint.UseVisualStyleBackColor = true;
+            this.btnHint.Click += new System.EventHandler(this.BtnHint_ClickEventHandler);
+            // 
             // FrmHangman
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1213, 769);
+            this.Controls.Add(this.btnHint);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnNewWord);
             this.Controls.Add(this.lblWordList);
@@ -183,5 +197,6 @@
         private System.Windows.Forms.Label lblWordList;
         private System.Windows.Forms.Button btnNewWord;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnHint;
     }
 }

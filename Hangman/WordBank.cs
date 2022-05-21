@@ -9,7 +9,7 @@ namespace Hangman
 
         /// <summary>
         /// WordBank Parameterized Constructor
-        /// Sets parameter data to property data for corresponding WordBank object
+        /// Sets parameter data into property data for corresponding WordBank object
         /// </summary>
         /// <param name="inputWrd"></param>
         public WordBank()

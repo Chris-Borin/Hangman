@@ -54,5 +54,10 @@ namespace Hangman
         {
             return AllBody[CurrentBodyIndex];
         }
+
+        public void Hint()
+        {
+            CurrentBodyIndex--;
+        }
     }
 }
