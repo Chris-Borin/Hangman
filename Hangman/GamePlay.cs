@@ -10,7 +10,6 @@ namespace Hangman
         match,
         noMatch,
         win,
-        lose,
         duplicate
     }
 
@@ -84,14 +83,24 @@ namespace Hangman
         /// Reveals an unguessed letter to the user
         /// </summary>
         /// <returns></returns>
-        public string Hint(bool end)
+        public string Hint(bool end, BodyParts obj)
         {
             // Ensures no guesses after conclusion of game
             if (end)
-                return "More than two remaining letters are required for a hint\n\nSORRY";
+                if (!Win())
+                    return "More than two remaining letters are required for a hint\n\nSORRY";
+                else
+                    return "Congratulations! You have correctly guessed Hangman. The word was " + Word.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
 
             // Initializing counter for minimum letters remaining requirement
             int win = 0;
+
+            // Assertion ensures enough Body Parts remain for a hint
+            if (obj.HangNext())
+            {
+                obj.Hint();
+                return "Not enough Body Parts available for another Hint";
+            }
 
             // Assertion ensures more than one or more letters to be guessed remain
             foreach (bool one in Matched)
@@ -100,9 +109,14 @@ namespace Hangman
                 if (one)
                     win++;
 
-                // Internally exits once only final letter to answer remains
-                if (win >= Matched.Count - 1)
+                // Returns once 2 final letters of answer remain
+                if (win >= Matched.Count - 2)
+                {
+                    // Prevents inaccurate body parts to be displayed
+                    obj.Hint();
+
                     return "More than two remaining letters are required for a hint\n\nSORRY";
+                }
             }
 
             // Setting hint index to true

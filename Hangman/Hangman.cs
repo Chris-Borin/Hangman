@@ -26,7 +26,7 @@ namespace Hangman
         private string theWord = "1234567890";
 
         // True once game has been concluded
-        private bool body = false;
+        private bool end = false;
 
         /// <summary>
         /// Hangman Form Load Event Handler
@@ -48,14 +48,11 @@ namespace Hangman
             gp = new GamePlay(theWord);
 
             // Setting answer label to number of chars from answer word
-            lblGeneratedWrd.Text = "";
-            for(int i = 0; i < theWord.Length; i++)
-            {
-                lblGeneratedWrd.Text += "_ ";
-            }
+            lblGeneratedWrd.Text = gp.DisplayState();
+
             // Setting answer label visibility to true after label is manipulated
             lblGeneratedWrd.Visible = true;
-
+            
             // Initializing and displaying guessed letters label
             lblGuessed.Text = "";
             lblGuessed.Visible = true;
@@ -92,7 +89,7 @@ namespace Hangman
                 case GuessResult.match:
 
                     // Confirms game has not concluded
-                    if (body)
+                    if (end)
                         break;
 
                     // Reinitializing label to empty string for repopulation
@@ -106,7 +103,7 @@ namespace Hangman
                 case GuessResult.noMatch:
 
                     // Confirms game has not concluded
-                    if (body)
+                    if (end)
                         break;
 
                     // True on final attempt
@@ -115,7 +112,7 @@ namespace Hangman
                     // Final attempt has been reached
                     if (last)
                     {
-                        body = true;
+                        end = true;
                         lstbxWordBank.Items.Add(bp.LastHung());
                         MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
                         
@@ -134,14 +131,14 @@ namespace Hangman
                 case GuessResult.duplicate:
                     
                     // Confirms game has not concluded
-                    if (body)
+                    if (end)
                         break;
                     MessageBox.Show("You have already guessed the letter " + lttrGuess);
                     break;
             }
 
             // Prevents user input during a finished game
-            if (body)
+            if (end)
             {
                 MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
                 return;
@@ -166,40 +163,17 @@ namespace Hangman
         /// <param name="e"></param>
         private void BtnNewWord_ClickEventHandler(object sender, EventArgs e)
         {
+            // Reinitializing labels and answer
+            HangmanFrm_LoadEventHandler(sender, e);
+
             // Reinitializing end of game to false
-            body = false;
+            end = false;
 
             // Reinitializing Body Part attributes
             bp.NewWord();
 
             // Clearing list of Body Parts
             lstbxWordBank.Items.Clear();
-
-            // Setting answer label to false before label manipulation
-            lblGeneratedWrd.Visible = false;
-
-            // Hiding guessed letters label before manipulation
-            lblGuessed.Visible = false;
-
-            // Generating random answer
-            theWord = wb.ChooseWord(theWord.Length);
-
-            // Reinitializing guessed letters and matches
-            gp = new GamePlay(theWord);
-
-            // Reinitializing answer and guessed letter labels to empty strings for update
-            lblGeneratedWrd.Text = "";
-            lblGuessed.Text = "";
-
-            // Setting answer label to number of chars from answer word
-            for (int i = 0; i < theWord.Length; i++)
-            {
-                lblGeneratedWrd.Text += "_ ";
-            }
-
-            // Setting answer and guessed letter labels visibility to true after label manipulation
-            lblGeneratedWrd.Visible = true;
-            lblGuessed.Visible = true;
         }
 
         /// <summary>
@@ -221,28 +195,24 @@ namespace Hangman
         /// <param name="e"></param>
         private void BtnHint_ClickEventHandler(object sender, EventArgs e)
         {
-            // Stores hint char or message needing more available guesses
-            string hint = gp.Hint(body);
+            // Needing more than 2 remaining letters doesn't work with strawberry when remaining letter is r
 
-            // If more than 20 chars, it is a MessageBox
-            if (hint.Length > 20)
+            // Determines hint availability
+            string hint = gp.Hint(end, bp);
+            
+            // If more than 1 char, it is a MessageBox
+            if (hint.Length > 1)
             {
                 MessageBox.Show(hint);
                 return;
             }
-            else
-                lblGuessed.Text += hint.ToUpper() + ", ";
 
             // Adds updated body part to ListBox
-            if (!bp.HangNext())
-                lstbxWordBank.Items.Add(bp.LastHung());
-
-            // Assertion ensures enough Body Parts remain for a hint
             else
             {
-                bp.Hint();
-                MessageBox.Show("Not enough Body Parts available for another Hint");
-                return;
+                lblGuessed.Text += hint.ToUpper() + ", ";
+
+                lstbxWordBank.Items.Add(bp.LastHung());
             }
 
             // Reinitializing answer label for manipulation
