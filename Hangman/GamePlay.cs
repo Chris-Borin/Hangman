@@ -88,7 +88,7 @@ namespace Hangman
             // Ensures no guesses after conclusion of game
             if (end)
                 if (!Win())
-                    return "More than two remaining letters are required for a hint\n\nSORRY";
+                    return "Number of alotted attempts exceeded. The word was " + Word.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
                 else
                     return "Congratulations! You have correctly guessed Hangman. The word was " + Word.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
 
@@ -98,7 +98,9 @@ namespace Hangman
             // Assertion ensures enough Body Parts remain for a hint
             if (obj.HangNext())
             {
+                // Prevents inaccurate incremented body part to be displayed
                 obj.Hint();
+
                 return "Not enough Body Parts available for another Hint";
             }
 
@@ -119,7 +121,7 @@ namespace Hangman
                 }
             }
 
-            // Setting hint index to true
+            // Setting hint index of answer to true
             int index = 0;
             while (Matched[index])
             {

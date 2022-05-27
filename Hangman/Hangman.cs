@@ -79,9 +79,6 @@ namespace Hangman
             // Determining guess result
             guessResult = gp.Guess(lttrGuess);
 
-            // Used to determine final attempt
-            bool last = false;
-
             // Executes based on guessResult value
             switch (guessResult)
             {
@@ -107,13 +104,15 @@ namespace Hangman
                         break;
 
                     // True on final attempt
-                    last = bp.HangNext();
+                    end = bp.HangNext();
 
                     // Final attempt has been reached
-                    if (last)
+                    if (end)
                     {
-                        end = true;
+                        // Adds updated body part to ListBox
                         lstbxWordBank.Items.Add(bp.LastHung());
+
+                        // Lose event message
                         MessageBox.Show("Number of alotted attempts exceeded. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
                         
                         // Appending current guess to guessed letters label
@@ -133,6 +132,7 @@ namespace Hangman
                     // Confirms game has not concluded
                     if (end)
                         break;
+
                     MessageBox.Show("You have already guessed the letter " + lttrGuess);
                     break;
             }
@@ -147,9 +147,12 @@ namespace Hangman
             // Result of guess reinitialized to confirm win status
             guessResult = gp.Guess(lttrGuess);
 
-            // Win message
             if (guessResult == GuessResult.win)
             {
+                // End of game reached
+                end = true;
+
+                // Win event message
                 MessageBox.Show("Congratulations! You have correctly guessed Hangman. The word was " + theWord.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word");
                 return;
             }
@@ -211,7 +214,6 @@ namespace Hangman
             else
             {
                 lblGuessed.Text += hint.ToUpper() + ", ";
-
                 lstbxWordBank.Items.Add(bp.LastHung());
             }
 
