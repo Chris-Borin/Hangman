@@ -10,9 +10,8 @@ namespace Hangman
             InitializeComponent();
         }
 
-        // Declaring, initializing, and instantiating new BodyParts object
-        // Populates Body Parts
-        private BodyParts bp = new BodyParts();
+        // Declaring and initializing BodyParts object
+        private BodyParts bp;
 
         // Declaring, initializing, and instantiating WordBank object
         // Populates contents of Word Bank
@@ -47,6 +46,9 @@ namespace Hangman
             // Instantiating GamePlay class
             gp = new GamePlay(theWord);
 
+            // Instantiating BodyParts class
+            bp = new BodyParts();
+
             // Setting answer label to number of chars from answer word
             lblGeneratedWrd.Text = gp.DisplayState();
 
@@ -66,7 +68,7 @@ namespace Hangman
         private void BtnGuess_ClickEventHandler(object sender, EventArgs e)
         {
             // Confirms user input to be a singular letter
-            if(!char.TryParse(txtLttrGuess.Text, out char lttrGuess))
+            if (!char.TryParse(txtLttrGuess.Text, out char lttrGuess))
             {
                 // Alerts user to input a singular letter
                 MessageBox.Show("ERROR: Please enter a letter");
@@ -119,6 +121,7 @@ namespace Hangman
                         lblGuessed.Text += txtLttrGuess.Text.ToUpper() + ", ";
                         return;
                     }
+
                     // Adds updated body part to ListBox
                     lstbxWordBank.Items.Add(bp.LastHung());
 
@@ -171,9 +174,6 @@ namespace Hangman
 
             // Reinitializing end of game to false
             end = false;
-
-            // Reinitializing Body Part attributes
-            bp.NewWord();
 
             // Clearing list of Body Parts
             lstbxWordBank.Items.Clear();

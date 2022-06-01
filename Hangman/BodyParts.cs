@@ -27,15 +27,6 @@ namespace Hangman
         }
 
         /// <summary>
-        /// Current and Next Body Part initialized
-        /// Remaining Attempts initialized
-        /// </summary>
-        public void NewWord()
-        {
-            CurrentBodyIndex = 0;
-        }
-
-        /// <summary>
         /// Body part index increments
         /// Returns true on last attempt
         /// </summary>
