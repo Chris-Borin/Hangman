@@ -17,12 +17,12 @@ namespace Hangman
         {
             AllBody = new List<string>();
             AllBody.Add("None");
-            AllBody.Add("            Head");
-            AllBody.Add("            Torso");
+            AllBody.Add("               Head");
+            AllBody.Add("               Torso");
             AllBody.Add("Left Arm");
-            AllBody.Add("                 Right Arm");
+            AllBody.Add("                     Right Arm");
             AllBody.Add("Left Leg");
-            AllBody.Add("                 Right Leg");
+            AllBody.Add("                     Right Leg");
             CurrentBodyIndex = 0;
         }
 
@@ -34,7 +34,7 @@ namespace Hangman
         public bool HangNext()
         {
             CurrentBodyIndex++;
-            return CurrentBodyIndex == AllBody.Count - 1;
+            return CurrentBodyIndex <= AllBody.Count - 1;
         }
 
         /// <summary>

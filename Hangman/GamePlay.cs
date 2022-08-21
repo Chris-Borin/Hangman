@@ -23,6 +23,12 @@ namespace Hangman
         private List<bool> Matched { get; set; }
         private string Word { get; set; }
 
+        public string prompt = "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
+        public string prePrompt = " The word was ";
+        public string winPrompt = "Congratulations! You have correctly guessed Hangman.";
+        public string losePrompt = "Number of alotted attempts exceeded.";
+
+
         /// <summary>
         /// GamePlay Parameterized Constructor
         /// Constructor initializes properties
@@ -83,14 +89,15 @@ namespace Hangman
         /// Reveals an unguessed letter to the user
         /// </summary>
         /// <returns></returns>
-        public string Hint(bool end, BodyParts obj)
+        public string Hint(BodyParts obj)
         {
             // Ensures no guesses after conclusion of game
-            if (end)
-                if (!Win())
-                    return "Number of alotted attempts exceeded. The word was " + Word.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
-                else
-                    return "Congratulations! You have correctly guessed Hangman. The word was " + Word.ToUpper() + "\n\nClick the New Word button for a different word\nClick the Exit button to leave the game\nClick on the Hint button to reveal a letter on your next word";
+            if (Win())
+                return string.Concat(winPrompt, prePrompt) + Word.ToUpper() + prompt.Substring(0, 88);
+            else if (!obj.HangNext())
+                return string.Concat(losePrompt, prePrompt) + Word.ToUpper() + prompt;
+            else
+                obj.Hint();
 
             // Initializing counter for minimum letters remaining requirement
             int win = 0;
@@ -98,10 +105,14 @@ namespace Hangman
             // Assertion ensures enough Body Parts remain for a hint
             if (obj.HangNext())
             {
+                if (!obj.HangNext())
+                {
+                    obj.Hint();
+                    obj.Hint();
+                    return "Not enough Body Parts available for another Hint";
+                }
                 // Prevents inaccurate incremented body part to be displayed
                 obj.Hint();
-
-                return "Not enough Body Parts available for another Hint";
             }
 
             // Assertion ensures more than one or more letters to be guessed remain
