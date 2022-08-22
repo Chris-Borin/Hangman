@@ -16,7 +16,13 @@ namespace Hangman
         {
             WordsList = new List<string>();
             WordsList.Add("water");
-            WordsList.Add("ice");
+            WordsList.Add("cake");
+            WordsList.Add("pepper");
+            WordsList.Add("sodium");
+            WordsList.Add("jello");
+            WordsList.Add("yogurt");
+            WordsList.Add("cinnamon");
+            WordsList.Add("bread");
             WordsList.Add("food");
             WordsList.Add("juice");
             WordsList.Add("coke");

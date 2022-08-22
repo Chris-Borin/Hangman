@@ -123,12 +123,12 @@ namespace Hangman
                     win++;
 
                 // Returns once 2 final letters of answer remain
-                if (win >= Matched.Count - 2)
+                if (win >= Matched.Count - 3)
                 {
                     // Prevents inaccurate body parts to be displayed
                     obj.Hint();
 
-                    return "More than two remaining letters are required for a hint\n\nSORRY";
+                    return "More than three remaining letters are required for a hint\n\nSORRY";
                 }
             }
 
